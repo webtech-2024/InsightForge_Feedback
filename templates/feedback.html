@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Feedback Form</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            font-size: 2.2rem;
+        }
+        
+        h2 {
+            color: #3498db;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .rating-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .rating-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            margin: 0 5px;
+        }
+        
+        .rating-option input[type="radio"] {
+            display: none;
+        }
+        
+        .rating-option label {
+            display: block;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            background: #ecf0f1;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .rating-option input[type="radio"]:checked + label {
+            background: #3498db;
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .rating-option label:hover {
+            background: #d6dbdf;
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+        
+        .radio-option input {
+            margin-right: 8px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            padding: 18px 35px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: block;
+            margin: 40px auto 0;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
+        }
+        
+        .optional {
+            color: #7f8c8d;
+            font-style: italic;
+            font-weight: normal;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        @media (max-width: 650px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .rating-container {
+                flex-wrap: wrap;
+            }
+            
+            .rating-option {
+                width: 30%;
+                margin-bottom: 10px;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Course Feedback Form</h1>
+        
+        <!-- Updated: Post to Flask -->
+        <form id="feedbackForm" action="/submit" method="POST">
+            
+            <!-- Student Information Section -->
+            <div class="form-section">
+                <h2>1. Student Information</h2>
+                
+                <div class="form-group">
+                    <label for="fullName">Full Name <span class="optional">(optional)</span></label>
+                    <input type="text" id="fullName" name="fullName">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email <span class="optional">(optional)</span></label>
+                    <input type="email" id="email" name="email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="courseAttended">Course Attended <span class="required">*</span></label>
+                    <select id="courseAttended" name="courseAttended" required>
+                        <option value="">Please select...</option>
+                        <option value="Python">Python</option>
+                        <option value="Excel">Excel</option>
+                        <option value="Both">Both</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Instructor Evaluation Section -->
+            <div class="form-section">
+                <h2>2. Instructor Evaluation</h2>
+                <p>Please rate the instructor on the following criteria (1 = Poor, 5 = Excellent)</p>
+                
+                <div class="form-group">
+                    <label>Instructor's Knowledge <span class="required">*</span></label>
+                    <div class="rating-container">
+                        <div class="rating-option"><input type="radio" id="knowledge1" name="knowledge" value="1" required><label for="knowledge1">1</label></div>
+                        <div class="rating-option"><input type="radio" id="knowledge2" name="knowledge" value="2"><label for="knowledge2">2</label></div>
+                        <div class="rating-option"><input type="radio" id="knowledge3" name="knowledge" value="3"><label for="knowledge3">3</label></div>
+                        <div class="rating-option"><input type="radio" id="knowledge4" name="knowledge" value="4"><label for="knowledge4">4</label></div>
+                        <div class="rating-option"><input type="radio" id="knowledge5" name="knowledge" value="5"><label for="knowledge5">5</label></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Instructor's Communication <span class="required">*</span></label>
+                    <div class="rating-container">
+                        <div class="rating-option"><input type="radio" id="communication1" name="communication" value="1" required><label for="communication1">1</label></div>
+                        <div class="rating-option"><input type="radio" id="communication2" name="communication" value="2"><label for="communication2">2</label></div>
+                        <div class="rating-option"><input type="radio" id="communication3" name="communication" value="3"><label for="communication3">3</label></div>
+                        <div class="rating-option"><input type="radio" id="communication4" name="communication" value="4"><label for="communication4">4</label></div>
+                        <div class="rating-option"><input type="radio" id="communication5" name="communication" value="5"><label for="communication5">5</label></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Instructor's Helpfulness <span class="required">*</span></label>
+                    <div class="rating-container">
+                        <div class="rating-option"><input type="radio" id="helpfulness1" name="helpfulness" value="1" required><label for="helpfulness1">1</label></div>
+                        <div class="rating-option"><input type="radio" id="helpfulness2" name="helpfulness" value="2"><label for="helpfulness2">2</label></div>
+                        <div class="rating-option"><input type="radio" id="helpfulness3" name="helpfulness" value="3"><label for="helpfulness3">3</label></div>
+                        <div class="rating-option"><input type="radio" id="helpfulness4" name="helpfulness" value="4"><label for="helpfulness4">4</label></div>
+                        <div class="rating-option"><input type="radio" id="helpfulness5" name="helpfulness" value="5"><label for="helpfulness5">5</label></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Course Content Evaluation Section -->
+            <div class="form-section">
+                <h2>3. Course Content Evaluation</h2>
+                <p>Please rate the course content on the following criteria (1 = Poor, 5 = Excellent)</p>
+                
+                <div class="form-group">
+                    <label>Relevance of Topics <span class="required">*</span></label>
+                    <div class="rating-container">
+                        <div class="rating-option"><input type="radio" id="relevance1" name="relevance" value="1" required><label for="relevance1">1</label></div>
+                        <div class="rating-option"><input type="radio" id="relevance2" name="relevance" value="2"><label for="relevance2">2</label></div>
+                        <div class="rating-option"><input type="radio" id="relevance3" name="relevance" value="3"><label for="relevance3">3</label></div>
+                        <div class="rating-option"><input type="radio" id="relevance4" name="relevance" value="4"><label for="relevance4">4</label></div>
+                        <div class="rating-option"><input type="radio" id="relevance5" name="relevance" value="5"><label for="relevance5">5</label></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Clarity of Explanations <span class="required">*</span></label>
+                    <div class="rating-container">
+                        <div class="rating-option"><input type="radio" id="clarity1" name="clarity" value="1" required><label for="clarity1">1</label></div>
+                        <div class="rating-option"><input type="radio" id="clarity2" name="clarity" value="2"><label for="clarity2">2</label></div>
+                        <div class="rating-option"><input type="radio" id="clarity3" name="clarity" value="3"><label for="clarity3">3</label></div>
+                        <div class="rating-option"><input type="radio" id="clarity4" name="clarity" value="4"><label for="clarity4">4</label></div>
+                        <div class="rating-option"><input type="radio" id="clarity5" name="clarity" value="5"><label for="clarity5">5</label></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Practical Examples <span class="required">*</span></label>
+                    <div class="rating-container">
+                        <div class="rating-option"><input type="radio" id="examples1" name="examples" value="1" required><label for="examples1">1</label></div>
+                        <div class="rating-option"><input type="radio" id="examples2" name="examples" value="2"><label for="examples2">2</label></div>
+                        <div class="rating-option"><input type="radio" id="examples3" name="examples" value="3"><label for="examples3">3</label></div>
+                        <div class="rating-option"><input type="radio" id="examples4" name="examples" value="4"><label for="examples4">4</label></div>
+                        <div class="rating-option"><input type="radio" id="examples5" name="examples" value="5"><label for="examples5">5</label></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Open Feedback Section -->
+            <div class="form-section">
+                <h2>4. Open Feedback</h2>
+                
+                <div class="form-group">
+                    <label for="likedMost">What did you like most? <span class="optional">(optional)</span></label>
+                    <textarea id="likedMost" name="likedMost"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="improve">What could be improved? <span class="optional">(optional)</span></label>
+                    <textarea id="improve" name="improve"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Would you recommend this course? <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <div class="radio-option"><input type="radio" id="recommendYes" name="recommend" value="Yes" required><label for="recommendYes">Yes</label></div>
+                        <div class="radio-option"><input type="radio" id="recommendNo" name="recommend" value="No"><label for="recommendNo">No</label></div>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">Submit Feedback</button>
+        </form>
+    </div>
+</body>
+</html>
