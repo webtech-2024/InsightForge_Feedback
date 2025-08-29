@@ -13,8 +13,8 @@ ADMINS = ["nkosikhonampungose40@gmail.com", "afolayandorcas46@gmail.com"]
 # Email configuration (read from environment variables for security)
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-EMAIL_ADDRESS = os.getenv("nkosikhonampungose40@gmail.com")      # set in Render Dashboard
-EMAIL_PASSWORD = os.getenv("kget nuww ohtk jvju")    # set in Render Dashboard
+EMAIL_ADDRESS = os.getenv("EMAIL_ADDRESS")      # set in Render Dashboard
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")    # set in Render Dashboard
 
 @app.route("/")
 def index():
@@ -63,6 +63,9 @@ def submit():
 
     # Send email to both admins
     try:
+        if not EMAIL_ADDRESS or not EMAIL_PASSWORD:
+            return "<h2>❌ Error: Missing EMAIL_ADDRESS or EMAIL_PASSWORD environment variables.</h2>"
+
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
         server.starttls()
         server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
